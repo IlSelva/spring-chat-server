@@ -5,8 +5,6 @@ import com.git.ilselva.chat.server.model.UserSession;
 import com.git.ilselva.chat.server.service.api.RoomRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
