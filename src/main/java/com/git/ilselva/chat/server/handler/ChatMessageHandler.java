@@ -20,15 +20,13 @@ import static org.springframework.integration.ip.IpHeaders.CONNECTION_ID;
 public class ChatMessageHandler implements MessageHandler {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ChatMessageHandler.class);
-    private final UserSessionRegistry userSessionRegistry;
-    private UserSessionRegistry sessionRegistry;
-    private RoomRepository roomRepository;
+    private final UserSessionRegistry sessionRegistry;
+    private final RoomRepository roomRepository;
 
     @Autowired
-    public ChatMessageHandler(UserSessionRegistry sessionRegistry, RoomRepository roomRepository, UserSessionRegistry userSessionRegistry) {
+    public ChatMessageHandler(UserSessionRegistry sessionRegistry, RoomRepository roomRepository) {
         this.sessionRegistry = sessionRegistry;
         this.roomRepository = roomRepository;
-        this.userSessionRegistry = userSessionRegistry;
     }
 
     @Override
@@ -90,13 +88,15 @@ public class ChatMessageHandler implements MessageHandler {
 
     private void showCommands(UserSession session) {
         session.sendResponse(
-                "/create <room> to create a new room\r\n" +
-                        "/join to join an existing room\r\n" +
-                        "/list to list all existing rooms\r\n" +
-                        "/users to show all users in the current room\r\n" +
-                        "/msg <content> to send a message in the current room\r\n" +
-                        "/pm <user> <content> to send a private message to <user>\r\n" +
-                        "/help to see all available commands (you are here!)\r\n"
+                """
+                        /create <room> to create a new room\r
+                        /join to join an existing room\r
+                        /list to list all existing rooms\r
+                        /users to show all users in the current room\r
+                        /msg <content> to send a message in the current room\r
+                        /pm <user> <content> to send a private message to <user>\r
+                        /help to see all available commands (you are here!)\r
+                        """
         );
     }
 
