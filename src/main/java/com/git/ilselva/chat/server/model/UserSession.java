@@ -6,11 +6,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.integration.ip.tcp.connection.TcpConnection;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.MessageBuilder;
+
 import java.nio.charset.StandardCharsets;
 
 public class UserSession {
+
     private final static Logger LOGGER = LoggerFactory.getLogger(UserSession.class);
-    private String username;
+    private User user;
     private String currentRoom;
     private final TcpConnection connection;
 
@@ -18,12 +20,12 @@ public class UserSession {
         this.connection = connection;
     }
 
-    public String getUsername() {
-        return username;
+    public User getUser() {
+        return user;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public String getCurrentRoom() {
@@ -38,6 +40,10 @@ public class UserSession {
         return connection;
     }
 
+    public String getConnectionId() {
+        return connection.getConnectionId();
+    }
+
     public void sendResponse(String content) {
         try {
             byte[] payload = (content + "\r\n").getBytes(StandardCharsets.UTF_8);
@@ -47,4 +53,18 @@ public class UserSession {
             LOGGER.error("Failed to send response", e);
         }
     }
+
+    public void sendClosingResponse(String content) {
+        sendResponse(content);
+        closeSession();
+    }
+
+    public void closeSession() {
+        try {
+            connection.close();
+        } catch (Exception e) {
+            LOGGER.warn("Failed to close session", e);
+        }
+    }
+
 }

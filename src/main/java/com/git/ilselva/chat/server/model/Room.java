@@ -5,7 +5,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class Room {
     private final String name;
     private final UserSession owner;
-    private final ConcurrentHashMap<String, UserSession> members;
+    private final ConcurrentHashMap<User, UserSession> members;
 
     public Room(String name, UserSession owner) {
         this.name = name;
@@ -14,11 +14,11 @@ public class Room {
     }
 
     public void addMember(UserSession userSession) {
-        members.put(userSession.getUsername(), userSession);
+        members.put(userSession.getUser(), userSession);
     }
 
     public void removeMember(UserSession userSession) {
-        members.remove(userSession.getUsername());
+        members.remove(userSession.getUser());
     }
 
     public boolean isOwner(UserSession userSession) {
@@ -32,7 +32,7 @@ public class Room {
         return name;
     }
 
-    public ConcurrentHashMap<String, UserSession> getMembers() {
+    public ConcurrentHashMap<User, UserSession> getMembers() {
         return members;
     }
 
